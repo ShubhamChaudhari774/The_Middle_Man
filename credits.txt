@@ -1,0 +1,3 @@
+Sites/Materials used:
+
+https://docs.djangoproject.com/en/6.0/ -- We made use of the Django Documentation as a reference for Django:
