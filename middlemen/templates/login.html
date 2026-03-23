@@ -3,8 +3,15 @@
 <form action='/loginUser' method="post">
     {% csrf_token %}
     <h1>Login</h1>
-    <!-- Text Field for Username and Password -->
-    <!-- Submit Button to Login-->
-    <!-- Link to Sign Up Page -->
+    <label id="usernameTextBoxLabel">Username: </label><input type="text" id="username" name="username">
+    <br>
+    <br>
+    <label id="passwordTextBoxLabel">Password: </label><input type="password" id="password" name="password">
+    <br>
+    <br>
+    <button type="Submit">Login</button>
+    <br>
+    <br>
+    <a href="/signup">Create New Account</a>
 </form>
 {% endblock %}

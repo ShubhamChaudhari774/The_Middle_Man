@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action='/signupUser' method="post">
+    {% csrf_token %}
+    <h1>Sign Up</h1>
+    <label id="usernameTextBoxLabel">Username: </label><input type="text" id="username" name="username">
+    <br>
+    <br>
+    <label id="passwordTextBoxLabel">Password: </label><input type="password" id="password" name="password">
+    <br>
+    <br>
+    <label id="reenteredPasswordTextBoxLabel">Reenter Password: </label><input type="password" id="reenteredPassword" name="reenteredPassword">
+    <br>
+    <br>
+    <label id="emailTextboxLabel">Email: </label><input type="email" id="email" name="email">
+    <br>
+    <br>
+    <label id="firstNameTextboxLabel">First Name: </label><input type="text" id="firstName" name="firstName">
+    <br>
+    <br>
+    <label id="lastNameTextboxLabel">Last Name: </label><input type="text" id="lastName" name="lastName">
+    <br>
+    <br>
+    <button type="Submit">Login</button>
+    <br>
+    <br>
+</form>
+{% endblock %}
