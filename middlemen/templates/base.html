@@ -4,23 +4,24 @@
         <title>The Middlemen</title>
     </head>
     <body>
-    <div id="menubar">
-        <a id="homelink" href="/">Home</a>
-        {% if user.is_authenticated %}
-        <a id="profilelink" href="/profile">Profile</a>
-        <a id="messageslink" href="/messages">Messages</a>
-        <a id="searchlink" href="/search">Search</a>
-        <a id="logoutlink" href="/logout">Logout</a>
-        {% else %}
-        <a id="loginlink" href="/login">Login</a>
-        {% endif %}
-    </div>
-    
-    <!-- This will be filled in by page specific content -->
-    <div id="content">
-    {% block content %}
+        <!-- This is the menubar at the top of the page -->
+        <div id="menubar">
+            <a id="homelink" href="/">Home</a>
+            {% if user.is_authenticated %}
+            <a id="profilelink" href="/profile">Profile</a>
+            <a id="messageslink" href="/messages">Messages</a>
+            <a id="searchlink" href="/search">Search</a>
+            <a id="logoutlink" href="/logout">Logout</a>
+            {% else %}
+            <a id="loginlink" href="/login">Login</a>
+            {% endif %}
+        </div>
+
+        <!-- This will be filled in by page specific content -->
+        <div id="content">
+        {% block content %}
         
-    {% endblock %}
-</div>
+        {% endblock %}
+        </div>
     </body>
 </html>
