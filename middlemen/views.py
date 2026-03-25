@@ -9,10 +9,7 @@ def homeView(request):
     """
     This view will return the home page of the logged in user; if a user is not logged in it will redirect to the loginView view
     """
-    if request.user.is_authenticated == True:
-        return render(request, 'home.html', {'user': request.user})
-    else:
-        return redirect(loginView)
+    return render(request, 'home.html', {'user': request.user})
 
 def loginView(request):
     """
