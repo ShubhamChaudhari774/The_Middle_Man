@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About — The Middleman{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section style="text-align:center;padding:5rem 2rem 4rem;">
+  <h1 class="section-title" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:1rem;">About The Middleman</h1>
+  <p class="section-sub" style="font-size:16px;">Transforming the way local food reaches your table.</p>
+</section>
+
+<!-- IMPACT STATS -->
+<section class="section section-green">
+  <div class="section-inner">
+    <h2 class="section-title" style="margin-bottom:2.5rem;">Our Impact</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.5rem;">
+      {% for icon,num,label in impact %}
+      <div style="text-align:center;">
+        <div style="font-size:26px;margin-bottom:6px;">{{ icon }}</div>
+        <div class="stat-num" style="color:#fff;">{{ num }}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.65);margin-top:4px;">{{ label }}</div>
+      </div>
+      {% empty %}
+      {% for d in "1234" %}
+      <div style="text-align:center;">
+        <div style="font-size:26px;margin-bottom:6px;">{% cycle '🌾' '🍽️' '💰' '📍' %}</div>
+        <div class="stat-num" style="color:#fff;">{% cycle '500+' '1,200+' '$2M+' '47' %}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.65);margin-top:4px;">{% cycle 'Producers Onboarded' 'Restaurants Connected' 'Saved in Fees' 'States Covered' %}</div>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="section" style="text-align:center;">
+  <div style="max-width:760px;margin:0 auto;">
+    <div style="font-size:32px;margin-bottom:1rem;">🌍</div>
+    <h2 class="section-title" style="margin-bottom:1.2rem;">Our Vision</h2>
+    <p style="font-size:15px;color:#666;line-height:1.8;">
+      We envision a world where every community has a thriving local food ecosystem. Where farmers earn fairly, restaurants source sustainably, and consumers enjoy the freshest food possible. We're building the infrastructure to make direct farm-to-table partnerships the norm, not the exception.
+    </p>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section section-white">
+  <div class="section-inner">
+    <h2 class="section-title text-center" style="margin-bottom:3rem;">What We Stand For</h2>
+    <div class="card-grid-3">
+      <div class="card card-cream" style="padding:1.75rem;">
+        <div style="font-size:26px;margin-bottom:.8rem;">⚖️</div>
+        <div class="step-title">Fairness</div>
+        <p class="step-desc mt-1">Every transaction should benefit both parties. No distributor markup so producers earn more and buyers pay less.</p>
+      </div>
+      <div class="card card-cream" style="padding:1.75rem;">
+        <div style="font-size:26px;margin-bottom:.8rem;">🔍</div>
+        <div class="step-title">Transparency</div>
+        <p class="step-desc mt-1">No hidden fees, no opaque supply chains. Every price, product, and producer is visible and accountable.</p>
+      </div>
+      <div class="card card-cream" style="padding:1.75rem;">
+        <div style="font-size:26px;margin-bottom:.8rem;">🤝</div>
+        <div class="step-title">Community</div>
+        <p class="step-desc mt-1">We build a network of long-term partnerships between local farms and local businesses, not just one-off transactions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-head">
+      <h2 class="section-title">Meet the Team</h2>
+      <p class="section-sub">Four students. One mission. Zero middlemen.</p>
+    </div>
+    <div class="team-grid">
+      {% for member in team %}
+      <div class="team-card">
+        <div class="team-avatar-area" style="background:{% cycle '#e8f0d8' '#fef3e2' '#f5e8f0' '#f0ebe0' %};">
+          <div class="team-initials">{{ member.initials }}</div>
+        </div>
+        <div class="team-body">
+          <div class="team-name">{{ member.name }}</div>
+          <div class="team-role">{{ member.role }}</div>
+          <p class="team-bio">{{ member.bio }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- WHY WE BUILT THIS -->
+<section class="section section-green" style="text-align:center;">
+  <div style="max-width:680px;margin:0 auto;">
+    <h2 class="section-title" style="margin-bottom:1.2rem;">Why We Built This</h2>
+    <p style="font-size:15px;color:rgba(255,255,255,.75);line-height:1.8;margin-bottom:2rem;">
+      Local farmers lose profit to distributors. Restaurants overpay for ingredients. We saw a broken supply chain and built the fix — a direct platform where both sides win. No bloated middlemen. No mystery markups. Just fair, transparent trade.
+    </p>
+    <div class="cta-btns">
+      <a href="{% url 'signup' %}" class="btn btn-white">Join as Producer</a>
+      <a href="{% url 'signup' %}" class="btn" style="background:transparent;color:#fff;border:2px solid rgba(255,255,255,.45);">Join as Restaurant</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
