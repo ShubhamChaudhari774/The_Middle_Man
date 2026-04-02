@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from middlemen.views import *
+from middlemen import views
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
@@ -30,4 +30,19 @@ urlpatterns = [
     path('profile', profileView, name="profile"), 
     path('messages', messagesView, name="messages"),
     path('search', searchView, name="search") 
+
+    path('admin/', admin.site.urls),
+
+    path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+    path('browse/', views.browse, name='browse'),
+
+    path('login/', views.login_view, name='login'),
+    path('signup/', views.signup_view, name='signup'),
+    path('logout/', views.logout_view, name='logout'),
+
+    path('buyer-profile/', views.buyer_profile, name='buyer_profile'),
+    path('producer-profile/', views.producer_profile, name='producer_profile'),
 ]
+
+
