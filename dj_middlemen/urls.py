@@ -19,12 +19,15 @@ from django.urls import path
 from middlemen.views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('login', loginView),
-    path('loginUser', loginUser),
-    path('', homeView),
-    path('signup', signupView), 
-    path('signupUser', signupUser),
-    path('logout', logoutUser),
-    path('browse', browseView, name="browse")
+    path('admin/', admin.site.urls, name="admin"),
+    path('login', loginView, name="login"),
+    path('loginUser', loginUser, name="loginUser"),
+    path('', homeView, name="home"),
+    path('signup', signupView, name="signup"), 
+    path('signupUser', signupUser, name="signupUser"),
+    path('logout', logoutUser, name="logout"),
+    path('browse', browseView, name="browse"),
+    path('profile', loginView, name="profile"), # Change this to go to profile instead of home.
+    path('messages', loginView, name="messages"), # Change this to go messages. 
+    path('search', loginView, name="search") # Change this to go to search.
 ]

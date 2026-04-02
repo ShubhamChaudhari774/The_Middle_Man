@@ -6,7 +6,7 @@
 <table>
     <tr><th>Name</th></tr>
     {% for user in rows %}
-    <tr><td>{{ user.first_name }}</td> <td>{{ user.last_name }}</td></tr>
+    <tr><td>{{ user.first_name }}</td> <td>{{ user.last_name }}</td><td>{{ user.email }}</td></tr>
     {% endfor %}
 </table>
 </body>

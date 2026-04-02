@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<form action='/signupUser' method="post">
+<form action="{% url 'signupUser' %}" method="post">
     {% csrf_token %}
     <h1>Sign Up</h1>
     <label id="usernameTextBoxLabel">Username: </label><input type="text" id="username" name="username">
