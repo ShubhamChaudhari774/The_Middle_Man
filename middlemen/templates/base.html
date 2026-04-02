@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,11 +19,93 @@
             {% endif %}
         </div>
 
-        <!-- This will be filled in by page specific content -->
-        <div id="content">
-        {% block content %}
-        
-        {% endblock %}
-        </div>
-    </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}The Middleman{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="icon" href="{% static 'images/logo.png' %}" type="image/png">
+</head>
+<body>
+
+
+<!-- NAVBAR --> 
+<nav class="navbar">
+  <a href="{% url 'home' %}" class="navbar-brand">
+    <img src="{% static 'images/logo.png' %}" alt="Middleman Logo" class="navbar-logo">
+    <span class="navbar-name">The Middleman</span>
+  </a>
+
+  <div class="navbar-links">
+    <a href="{% url 'home' %}"   class="nav-link {% if request.resolver_match.url_name == 'home'   %}active{% endif %}">Home</a>
+    <a href="{% url 'about' %}"  class="nav-link {% if request.resolver_match.url_name == 'about'  %}active{% endif %}">About</a>
+    <a href="{% url 'browse' %}" class="nav-link {% if request.resolver_match.url_name == 'browse' %}active{% endif %}">Browse</a>
+  </div>
+
+  <div class="navbar-actions">
+    {% if user.is_authenticated %}
+      <a href="{% url 'messages' %}" class="nav-msg-btn">💬 Messages</a>
+      {% if user.profile.is_producer %}
+        <a href="{% url 'producer_profile' %}" class="nav-user">👨‍🌾 {{ user.first_name|default:user.username }}</a>
+      {% else %}
+        <a href="{% url 'buyer_profile' %}" class="nav-user">👩‍🍳 {{ user.first_name|default:user.username }}</a>
+      {% endif %}
+      <form method="post" action="{% url 'logout' %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" class="nav-signout">Sign Out</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}"  class="btn-nav-login">Login</a>
+      <a href="{% url 'signup' %}" class="btn-nav-signup">Sign Up</a>
+    {% endif %}
+  </div>
+</nav>
+
+<!-- FLASH MESSAGES -->
+{% if messages %}
+<div class="flash-messages">
+  {% for message in messages %}
+    <div class="flash {{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- MAIN CONTENT -->
+<main>{% block content %}{% endblock %}</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <img src="{% static 'images/logo.png' %}" alt="logo" class="footer-logo">
+        <span class="footer-name">The Middleman</span>
+      </div>
+      <p class="footer-desc">Connecting local food producers directly with restaurants. Fair prices, transparent deals.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <a href="{% url 'home' %}"   class="footer-link">Home</a>
+      <a href="{% url 'about' %}"  class="footer-link">About Us</a>
+      <a href="{% url 'browse' %}" class="footer-link">Browse Products</a>
+    </div>
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <span class="footer-link">Privacy Policy</span>
+      <span class="footer-link">Terms of Service</span>
+      <span class="footer-link">Cookie Policy</span>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <span class="footer-link">📧 hello@themiddleman.com</span>
+      <span class="footer-link">📞 (555) 123-4567</span>
+      <span class="footer-link">📍 Portland, OR</span>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 The Middleman. All rights reserved.</div>
+</footer>
+
+{% block extra_js %}{% endblock %}
+</body>
 </html>

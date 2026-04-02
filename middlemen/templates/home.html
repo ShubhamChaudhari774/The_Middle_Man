@@ -1,4 +1,177 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-badge">🌾 Farm to Table, Simplified</span>
+  <h1 class="hero-title">Cut the Middleman.<br><span>Keep the Profit.</span></h1>
+  <p class="hero-sub">A direct marketplace connecting local food producers with restaurants and businesses. Fair prices, transparent deals.</p>
+  <div class="hero-btns">
+    <a href="{% url 'browse' %}" class="btn btn-primary">Browse Products →</a>
+    <a href="{% url 'signup' %}" class="btn btn-outline">Get Started</a>
+  </div>
+  <div class="hero-stats">
+    <div><div class="stat-num">{{ producer_count }}+</div><div class="stat-lbl">Producers</div></div>
+    <div><div class="stat-num">{{ buyer_count }}+</div><div class="stat-lbl">Restaurants</div></div>
+    <div><div class="stat-num">$2M+</div><div class="stat-lbl">Saved in Fees</div></div>
+  </div>
+</section>
+
+<!-- GREEN BANNER -->
+<div class="green-banner">
+  <p>"Connecting farms to kitchens — one direct deal at a time."</p>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-head">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-sub">Three simple steps to better business</p>
+    </div>
+    <div class="card-grid-3">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-icon">🌱</div>
+        <div class="step-title">Create Your Account</div>
+        <p class="step-desc">Sign up as a producer or restaurant owner in minutes.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-icon">🔍</div>
+        <div class="step-title">Connect Directly</div>
+        <p class="step-desc">Search by location, price, and category. No brokers involved.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-icon">🤝</div>
+        <div class="step-title">Seal the Deal</div>
+        <p class="step-desc">Message, negotiate, and build long-term partnerships.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section section-white">
+  <div class="section-inner">
+    <div class="section-head">
+      <h2 class="section-title">Featured Products</h2>
+      <p class="section-sub">Fresh from local producers near you</p>
+    </div>
+
+    {% if featured_products %}
+    <div class="card-grid-4">
+      {% for product in featured_products %}
+      <div class="card card-hover">
+        <div class="card-img">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:100%;height:100%;object-fit:cover;">
+          {% else %}
+            <span style="font-size:48px">
+              {% if product.category == 'Vegetables' %}🥬
+              {% elif product.category == 'Fruits' %}🍓
+              {% elif product.category == 'Dairy & Eggs' %}🥚
+              {% elif product.category == 'Meat & Poultry' %}🥩
+              {% else %}🌿{% endif %}
+            </span>
+          {% endif %}
+          {% if product.available %}
+            <span class="avail-badge avail-yes">Available</span>
+          {% else %}
+            <span class="avail-badge avail-no">Out of Stock</span>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <span class="card-tag">{{ product.category }}</span>
+          <div class="card-title">{{ product.name }}</div>
+          <div class="card-meta">{{ product.producer.business_name|default:product.producer.user.username }} · {{ product.producer.city }}</div>
+          <div class="card-price-row">
+            <span class="card-price">${{ product.price }}/{{ product.unit }}</span>
+          </div>
+          <a href="{% url 'browse' %}" class="btn btn-primary btn-sm" style="width:100%;display:block;text-align:center;">View</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <!-- Demo cards when no products in DB yet -->
+    <div class="card-grid-4">
+      {% for item in "1234" %}
+      <div class="card">
+        <div class="card-img">
+          <span style="font-size:48px">{% cycle '🍅' '🍓' '🥚' '🥩' %}</span>
+          <span class="avail-badge avail-yes">Available</span>
+        </div>
+        <div class="card-body">
+          <span class="card-tag">{% cycle 'Vegetables' 'Fruits' 'Dairy & Eggs' 'Meat & Poultry' %}</span>
+          <div class="card-title">{% cycle 'Organic Tomatoes' 'Fresh Strawberries' 'Free-Range Eggs' 'Grass-Fed Beef' %}</div>
+          <div class="card-meta">{% cycle 'Sunny Acres Farm · Portland' 'Berry Ridge Co. · Salem' 'Clover Hill Ranch · Eugene' 'Prairie Wind Farm · Bend' %}</div>
+          <div class="card-price-row">
+            <span class="card-price">{% cycle '$2.50/lb' '$4.00/pint' '$6.00/dozen' '$12.00/lb' %}</span>
+          </div>
+          <a href="{% url 'browse' %}" class="btn btn-primary btn-sm" style="width:100%;display:block;text-align:center;">View</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-3">
+      <a href="{% url 'browse' %}" class="btn btn-primary">View All Products →</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-head">
+      <h2 class="section-title">Why Choose The Middleman?</h2>
+      <p class="section-sub">Built for fairness, transparency, and local partnerships</p>
+    </div>
+    <div class="card-grid-4">
+      {% for item in why_cards %}
+      <div class="card card-cream" style="padding:1.75rem;">
+        <div style="font-size:26px;margin-bottom:.8rem;">{{ item.icon }}</div>
+        <div class="step-title">{{ item.title }}</div>
+        <p class="step-desc mt-1">{{ item.desc }}</p>
+      </div>
+      {% empty %}
+      {% for icon,title,desc in why_list %}
+      <div class="card card-cream" style="padding:1.75rem;">
+        <div style="font-size:26px;margin-bottom:.8rem;">{{ icon }}</div>
+        <div class="step-title">{{ title }}</div>
+        <p class="step-desc mt-1">{{ desc }}</p>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section section-green" style="text-align:center;">
+  <h2 class="section-title">Ready to Transform Your Supply Chain?</h2>
+  <p class="section-sub">Join hundreds of producers and restaurants already saving money.</p>
+  <div class="cta-btns">
+    <a href="{% url 'signup' %}" class="btn btn-white">Join as Producer</a>
+    <a href="{% url 'signup' %}" class="btn" style="background:transparent;color:#fff;border:2px solid rgba(255,255,255,.45);">Join as Restaurant</a>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Pass why cards from Python via inline data
+const whyCards = [
+  {icon:'💸', title:'Fair Pricing',       desc:'No distributor markup. Producers earn more, restaurants pay less.'},
+  {icon:'📍', title:'Local First',        desc:'Source from farms near you. Fresh ingredients, reduced transport.'},
+  {icon:'🔒', title:'Verified Sellers',   desc:'Every producer profile is rated and reviewed by real buyers.'},
+  {icon:'💬', title:'Direct Messaging',   desc:'Negotiate deals and build relationships right inside the platform.'},
+];
+const grid = document.querySelector('.card-grid-4:last-of-type');
+// only inject if section is empty (no Django loop rendered)
+</script>
 {% endblock %}
