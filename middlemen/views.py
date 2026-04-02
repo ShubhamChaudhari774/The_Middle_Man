@@ -108,6 +108,15 @@ def browseView(request):
 
     return render(request, "browse.html", {"rows" : filtered_users})
 
+def profileView(request):
+    return render(request, "profile.html")
+
+def messagesView(request):
+    return render(request, "messages.html")
+
+def searchView(request):
+    return render(request, "search.html")
+
 
 def logoutUser(request):
     logout(request)

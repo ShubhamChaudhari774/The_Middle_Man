@@ -27,7 +27,7 @@ urlpatterns = [
     path('signupUser', signupUser, name="signupUser"),
     path('logout', logoutUser, name="logout"),
     path('browse', browseView, name="browse"),
-    path('profile', loginView, name="profile"), # Change this to go to profile instead of home.
-    path('messages', loginView, name="messages"), # Change this to go messages. 
-    path('search', loginView, name="search") # Change this to go to search.
+    path('profile', profileView, name="profile"), 
+    path('messages', messagesView, name="messages"),
+    path('search', searchView, name="search") 
 ]
