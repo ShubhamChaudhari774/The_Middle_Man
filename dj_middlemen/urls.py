@@ -18,31 +18,24 @@ from django.contrib import admin
 from django.urls import path
 from middlemen import views
 
-urlpatterns = [
-    path('admin/', admin.site.urls, name="admin"),
-    path('login', loginView, name="login"),
-    path('loginUser', loginUser, name="loginUser"),
-    path('', homeView, name="home"),
-    path('signup', signupView, name="signup"), 
-    path('signupUser', signupUser, name="signupUser"),
-    path('logout', logoutUser, name="logout"),
-    path('browse', browseView, name="browse"),
-    path('profile', profileView, name="profile"), 
-    path('messages', messagesView, name="messages"),
-    path('search', searchView, name="search") 
 
+urlpatterns = [
     path('admin/', admin.site.urls),
 
+    # Core pages
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('browse/', views.browse, name='browse'),
 
+    # Auth
     path('login/', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('logout/', views.logout_view, name='logout'),
 
+    # Profiles
     path('buyer-profile/', views.buyer_profile, name='buyer_profile'),
     path('producer-profile/', views.producer_profile, name='producer_profile'),
+
+    # Messages
+    path('messages/', views.messages_view, name='messages'),
 ]
-
-
