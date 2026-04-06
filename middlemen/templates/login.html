@@ -3,21 +3,6 @@
 {% block title %}Sign In — The Middleman{% endblock %}
 
 {% block content %}
-<form action="{% url 'loginUser' %}" method="post">
-    {% csrf_token %}
-    <h1>Login</h1>
-    <label id="usernameTextBoxLabel">Username: </label><input type="text" id="username" name="username">
-    <br>
-    <br>
-    <label id="passwordTextBoxLabel">Password: </label><input type="password" id="password" name="password">
-    <br>
-    <br>
-    <button type="Submit">Login</button>
-    <br>
-    <br>
-    <a href="{% url 'signup' %}">Create New Account</a>
-</form>
-{% endblock %}
 
 <div class="auth-wrap">
   <div class="form-card" style="width:100%;max-width:420px;">
