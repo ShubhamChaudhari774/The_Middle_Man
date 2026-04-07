@@ -31,6 +31,7 @@ def loginUser(request):
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(username=username, password=password)
+            request.session['username'] = username # store username in session cookie for future reference.
             if user != None:
                 login(request, user)
             else:
@@ -80,6 +81,32 @@ def signupUser(request):
 
         # Redirect to the login page
         return redirect(loginView)
+
+def browseView(request):
+    name = request.session['username']
+    
+    print(name)
+
+    if Producer.objects.filter(username=name).exists():
+        user_type = 'Producer'
+    elif Customer.objects.filter(username=name).exists():
+        user_type = 'Customer'
+    else:
+        user_type = "Undetermined"
+        print("Username not found")
+
+    print(user_type)
+
+    if user_type == "Producer":
+        users_to_list = Customer.objects.all()
+    elif user_type == "Customer":
+        users_to_list = Producer.objects.all()
+    else:
+        print("User type undetermined.")
+
+    filtered_users = User.objects.filter(username__in=users_to_list)
+
+    return render(request, "browse.html", {"rows" : filtered_users})
 
 def logoutUser(request):
     logout(request)

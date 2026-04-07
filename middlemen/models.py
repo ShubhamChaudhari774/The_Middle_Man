@@ -113,7 +113,7 @@ class Product(models.Model):
             return 1
         elif len(productName) > 30:
             return 2
-        elif costPerUnis > 99999999.99:
+        elif costPerUnits > 99999999.99:
             return 3
         elif len(units) > 20:
             return 4
