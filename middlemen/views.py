@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Q
-from .models import Profile, Product, RestaurantRequest, Message, SavedProducer
+from .models import Profile, Product, RestaurantRequest, Message, SavedProducer, Producer, Customer
 from .forms import (SignUpForm, LoginForm, ProfileEditForm,
                     ProductForm, RestaurantRequestForm, MessageForm, BrowseFilterForm)
 
@@ -53,53 +53,79 @@ def about(request):
     return render(request, 'about.html', {'team': team, 'impact': impact})
 
 
-# ─── AUTH: SIGN UP ────────────────────────────────────────────────────────────
-def signup_view(request):
-    if request.user.is_authenticated:
-        return redirect('home')
+def loginView(request):
+    """
+    This view will render the login page if the user is not authenticated, it will return the user to the home page if the user is already logged in
+    """
+    if request.user.is_authenticated == True:
+        return redirect(home)
+    else:
+        return render(request, 'login.html')
 
-    form = SignUpForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
-        user = form.save(commit=False)
-        user.set_password(form.cleaned_data['password1'])
-        user.save()
-        Profile.objects.create(
-            user=user,
-            role=form.cleaned_data['role'],
-            business_name=form.cleaned_data.get('business_name', ''),
-            city=form.cleaned_data.get('city', ''),
-            state=form.cleaned_data.get('state', ''),
-            zip_code=form.cleaned_data.get('zip_code', ''),
-        )
-        login(request, user)
-        messages.success(request, f"Welcome to The Middleman, {user.first_name or user.username}!")
-        return redirect('home')
+def signupView(request):
+    """
+    This view will render the signup page if the user is not authenticated, it will return the user to the home page if the user is already logged in
+    """
+    if request.user.is_authenticated == True:
+        return redirect(home)
+    else:
+        return render(request, 'signup.html')
 
-    return render(request, 'signup.html', {'form': form})
+def loginUser(request):
+    """
+    This view will login a user based on the form submitted by loginView
+    """
+    if request.user.is_authenticated == True:
+        return redirect(home)
+    else:
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user != None:
+                login(request, user)
+            else:
+                return redirect(loginView)
+            return redirect(home)
+        else:
+            return redirect(loginView)
 
-
-# ─── AUTH: SIGN IN ────────────────────────────────────────────────────────────
-def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-
-    form = LoginForm(request, data=request.POST or None)
-    if request.method == 'POST' and form.is_valid():
-        user = form.get_user()
-        if not form.cleaned_data.get('remember_me'):
-            request.session.set_expiry(0)
-        login(request, user)
-        messages.success(request, f"Welcome back, {user.first_name or user.username}!")
-        return redirect(request.GET.get('next', 'home'))
-
-    return render(request, 'login.html', {'form': form})
-
-
-# ─── AUTH: SIGN OUT ───────────────────────────────────────────────────────────
-def logout_view(request):
+def logoutUser(request):
     logout(request)
-    messages.info(request, "You've been signed out.")
-    return redirect('home')
+    return redirect(loginView)
+
+def signupUser(request):
+    """
+    This view will sign up a user based upon the form submitted by the signup view
+    """
+    if request.user.is_authenticated == True:
+        return redirect(home)
+    else:
+        # Validate that the user does not already exist
+        try:
+            user = User.objects.get(username=request.POST['username'])
+        except:
+            user = None
+
+        # Validate to make sure that the password entries match
+        if (request.POST['password'] != request.POST['reenteredPassword']):
+            return redirect(signupView)
+
+        # Add the user to customer/producer tables
+        if request.POST['userType'] == 'producer':
+            result = Producer.createProducer(username=request.POST['username'])
+            if (result != 0):
+                return redirect(signupView)
+        else:
+            result = Customer.createCustomer(username=request.POST['username'])
+            if (result != 0):
+                return redirect(signupView)
+
+        # Create the user in the user table
+        User.objects.create_user(username=request.POST['username'], password=request.POST['password'], email=request.POST['email'], first_name=request.POST['firstName'], last_name=request.POST['lastName'])
+
+        # Redirect to the login page
+        return redirect(loginView)
 
 
 # ─── BROWSE ───────────────────────────────────────────────────────────────────

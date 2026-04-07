@@ -74,6 +74,65 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} by {self.producer.business_name or self.producer.user.username}"
 
+class Customer(models.Model):
+    # Username field (should be the same as the username field in the Django User table)
+    username = models.CharField(primary_key=True, max_length=30)
+
+    def createCustomer(username: str) -> int:
+        """
+        This function is intended to be called by the view to create a new Customer object in the Customer table.
+        
+        Returns: 0 if succeeded; 1 if failed
+
+        """
+        try:
+            customer = Customer.objects.get(username=username)
+            return 1
+        except:
+            newCustomer = Customer(username=username)
+            newCustomer.save()
+            return 0
+    
+    def deleteCustomer(username: str) -> int:
+        """
+        This function is intended to be called by the view to delete a Customer object in the Customer table.
+        """
+        try:
+            customer = Customer.objects.get(username=username)
+            customer.delete()
+        except:
+            return None
+
+class Producer(models.Model):
+    # Username field (should be the same as the username field in the Django User table)
+    username = models.CharField(primary_key=True, max_length=30)
+
+    def createProducer(username: str) -> int:
+        """
+        This function is intended to be called by the view to create a new Producer object in the Producer table.
+
+        Returns: 0 if succeeded; 1 if failed
+        
+        """
+        try:
+            producer = Producer.objects.get(username=username)
+            return 1
+        except:
+            newProducer = Producer(username=username)
+            newProducer.save()
+            return 0
+
+    def deleteProducer(username: str) -> int:
+        """
+        This function is intended to be called by the view to delete a Producer object in the Producer table. 
+        
+        Input validation is not performed because if the item is not present, no error will be thrown.
+        """
+        try:
+            producer = Producer.objects.get(username=username)
+            producer.delete()
+        except:
+            return None
 
 class RestaurantRequest(models.Model):
     # Categories for requested items

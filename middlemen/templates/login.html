@@ -17,7 +17,7 @@
     <div class="flash error">{{ form.non_field_errors }}</div>
     {% endif %}
 
-    <form method="post">
+    <form action="/loginUser/" method="post">
       {% csrf_token %}
 
       <div class="form-group">

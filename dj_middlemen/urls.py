@@ -28,9 +28,11 @@ urlpatterns = [
     path('browse/', views.browse, name='browse'),
 
     # Auth
-    path('login/', views.login_view, name='login'),
-    path('signup/', views.signup_view, name='signup'),
-    path('logout/', views.logout_view, name='logout'),
+    path('login/', views.loginView, name='login'),
+    path('loginUser/', views.loginUser, name='loginUser'),
+    path('logout/', views.logoutUser, name='logout'),
+    path('signup/', views.signupView, name='signup'),
+    path('signupUser/', views.signupUser, name='signupUser'),
 
     # Profiles
     path('buyer-profile/', views.buyer_profile, name='buyer_profile'),
