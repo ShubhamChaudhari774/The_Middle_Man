@@ -1,4 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Messages Page</h1>
+<br>
+<h1>Messages</h1>
+
+
+
+<br><br><a href="/sendMessagePage"><u>Send Message</u></a><br><br>
+
+
+<!-- Message List -->
+<table>
+    <tr>
+        <th>From</th>
+        <th>Message Type</th>
+        <th>Options</th>
+    </tr>
+
+{% for message in messages %}
+    <tr>
+        <td>{{ message.MessageFrom }}</td>
+        <td>{% if message.IsNewMessage %}Unread{% else %}Read{% endif %}</td>
+        <td><br><br><a href="/viewMessage/{{ message.id }}">View Message</a><br><br><a href="/deleteMessage/{{ message.id }}">Delete Message</a><br><br></td>
+    </tr>
+{% endfor %}
+</table>
+
+
+
 {% endblock %}

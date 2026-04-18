@@ -60,14 +60,6 @@
   </div>
 </nav>
 
-<!-- FLASH MESSAGES -->
-{% if messages %}
-<div class="flash-messages">
-  {% for message in messages %}
-    <div class="flash {{ message.tags }}">{{ message }}</div>
-  {% endfor %}
-</div>
-{% endif %}
 
 <!-- MAIN CONTENT -->
 <main>{% block content %}{% endblock %}</main>

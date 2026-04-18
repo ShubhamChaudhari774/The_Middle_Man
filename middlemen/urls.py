@@ -12,8 +12,10 @@ urlpatterns = [
     path('signupUser/', views.signupUser, name='signupUser'),
     path('buyer-profile/', views.buyer_profile, name='buyer_profile'),
     path('producer-profile/', views.producer_profile, name='producer_profile'),
-    path('messages/', views.messages_view, name='messages'),
-    path('messages/start/<int:user_id>/', views.start_message, name='start_message'),
-    path('save-producer/<int:producer_id>/', views.save_producer, name='save_producer'),
+    path('messages/', views.messagesView, name='messages'),
+    path('sendMessagePage/', views.sendMessageView, name='sendMessageView'),
+    path('sendMessage/', views.sendMessageAction, name='sendMessageAction'),
+    path('viewMessage/<int:msgID>', views.viewMessage, name='viewMessage'),
+    path('deleteMessage/<int:msgID>', views.deleteMessage, name='deleteMessage'),
 ]
 

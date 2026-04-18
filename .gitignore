@@ -4,3 +4,4 @@ pull
 push
 middlemen/__pycache__/
 middlemen/migrations/
+messages/

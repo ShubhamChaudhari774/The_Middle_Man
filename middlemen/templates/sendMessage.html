@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="/sendMessage/" method="post">
+    {% csrf_token %}
+
+    <h1>Send a Message</h1><br><br>
+
+    <label>To: </label><input type="text" name="To"><br><br>
+    <label>From: </label><input type="text" name="From"><br><br>
+
+    <label>Message: </label><br><br><textarea name="message" rows="10" cols="50"></textarea><br><br>
+
+    <button type="submit">Send Message</button>
+
+    <br><br><a href="/messages"><u>Back</u></a>
+
+</form>
+
+
+
+
+{% endblock %}

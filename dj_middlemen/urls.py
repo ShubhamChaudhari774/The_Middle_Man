@@ -39,5 +39,9 @@ urlpatterns = [
     path('producer-profile/', views.producer_profile, name='producer_profile'),
 
     # Messages
-    path('messages/', views.messages_view, name='messages'),
+    path('messages/', views.messagesView, name='messages'),
+    path('sendMessagePage/', views.sendMessageView, name='sendMessageView'),
+    path('sendMessage/', views.sendMessageAction, name='sendMessageAction'),
+    path('viewMessage/<int:msgID>', views.viewMessage, name='viewMessage'),
+    path('deleteMessage/<int:msgID>', views.deleteMessage, name='deleteMessage'),
 ]

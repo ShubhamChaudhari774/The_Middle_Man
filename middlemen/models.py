@@ -164,29 +164,18 @@ class RestaurantRequest(models.Model):
     def __str__(self):
         return f"{self.title} by {self.buyer.business_name or self.buyer.user.username}"
 
-
 class Message(models.Model):
-    # User who sends the message
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
-
-    # User who receives the message
-    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
-
-    # Message content
-    body = models.TextField()
-
-    # Read/unread status
-    read = models.BooleanField(default=False)
-
-    # Timestamp of message creation
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    # Default ordering of messages (oldest first)
-    class Meta:
-        ordering = ['created_at']
-
-    def __str__(self):
-        return f"From {self.sender} to {self.recipient} at {self.created_at:%Y-%m-%d %H:%M}"
+    # User to whom the message is sent
+    MessageTo = models.CharField(max_length=150)
+    
+    # User from whom the message is sent
+    MessageFrom = models.CharField(max_length=150)
+    
+    # Text of the message
+    MessageBody = models.TextField()
+    
+    # New Message
+    IsNewMessage = models.BooleanField()
 
 
 class SavedProducer(models.Model):

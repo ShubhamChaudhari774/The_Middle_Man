@@ -2,17 +2,59 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib import messages
 from django.db.models import Q
 from .models import Profile, Product, RestaurantRequest, Message, SavedProducer, Producer, Customer
 from .forms import (SignUpForm, LoginForm, ProfileEditForm,
-                    ProductForm, RestaurantRequestForm, MessageForm, BrowseFilterForm)
+                    ProductForm, RestaurantRequestForm, BrowseFilterForm)
+import os
+import json
+
 
 def profileView(request):
     return render(request, "profile.html")
 
 def messagesView(request):
-    return render(request, "messages.html")
+    if request.user.is_authenticated:
+        messages = Message.objects.filter(MessageTo=request.user)
+        return render(request, "messages.html", {'messages': messages})
+    else:
+        return redirect(home)
+    
+def viewMessage(request, msgID):
+    if request.user.is_authenticated:
+        message = Message.objects.get(id=msgID)
+        return render(request, "viewMessage.html", {'message': message})
+    else:
+        return redirect(home)
+
+def sendMessageView(request):
+    if request.user.is_authenticated:
+        return render(request, 'sendMessage.html')
+    else:
+        return redirect(home)
+
+def sendMessageAction(request):
+    if request.user.is_authenticated:
+        MessageTo = request.POST['To']
+        MessageFrom = request.POST['From']
+        MessageBody = request.POST['message']
+        IsNewMessage = True
+        message = Message(MessageTo=MessageTo, MessageFrom=MessageFrom, MessageBody=MessageBody, IsNewMessage=IsNewMessage)
+        message.save()
+        return redirect(messagesView)
+    else:
+        return redirect(home)
+
+def deleteMessage(request, msgID):
+    if request.user.is_authenticated:
+        message = Message.objects.get(id=msgID)
+        if message.MessageTo == request.user.username:
+            message.delete()
+            return redirect(messagesView)
+        else:
+            return redirect(home)
+    else:
+        return redirect(home)
 
 def searchView(request):
     return render(request, "search.html")
@@ -303,70 +345,3 @@ def buyer_profile(request):
         'profile_form': profile_form,
         'req_form': req_form,
     })
-
-
-# ─── MESSAGING ────────────────────────────────────────────────────────────────
-@login_required
-def messages_view(request):
-    user = request.user
-    # All users the current user has talked to
-    partners_ids = Message.objects.filter(
-        Q(sender=user) | Q(recipient=user)
-    ).values_list('sender', 'recipient')
-
-    partner_set = set()
-    for s, r in partners_ids:
-        partner_set.add(s if s != user.id else r)
-
-    partners = User.objects.filter(id__in=partner_set)
-
-    # active conversation
-    active_id = request.GET.get('with')
-    active_user = None
-    conversation = []
-    msg_form = MessageForm()
-
-    if active_id:
-        active_user = get_object_or_404(User, id=active_id)
-        conversation = Message.objects.filter(
-            Q(sender=user, recipient=active_user) |
-            Q(sender=active_user, recipient=user)
-        ).order_by('created_at')
-        # mark received as read
-        conversation.filter(recipient=user, read=False).update(read=True)
-
-        if request.method == 'POST':
-            msg_form = MessageForm(request.POST)
-            if msg_form.is_valid():
-                m = msg_form.save(commit=False)
-                m.sender = user
-                m.recipient = active_user
-                m.save()
-                return redirect(f'/messages/?with={active_id}')
-
-    unread_count = Message.objects.filter(recipient=user, read=False).count()
-
-    return render(request, 'messages.html', {
-        'partners': partners,
-        'active_user': active_user,
-        'conversation': conversation,
-        'msg_form': msg_form,
-        'unread_count': unread_count,
-    })
-
-
-# ─── START CONVERSATION (from browse) ────────────────────────────────────────
-@login_required
-def start_message(request, user_id):
-    recipient = get_object_or_404(User, id=user_id)
-    return redirect(f'/messages/?with={user_id}')
-
-
-# ─── SAVE PRODUCER (buyer action) ─────────────────────────────────────────────
-@login_required
-def save_producer(request, producer_id):
-    buyer_profile = get_object_or_404(Profile, user=request.user, role='buyer')
-    producer_profile_obj = get_object_or_404(Profile, id=producer_id, role='producer')
-    SavedProducer.objects.get_or_create(buyer=buyer_profile, producer=producer_profile_obj)
-    messages.success(request, f"{producer_profile_obj.business_name or producer_profile_obj.user.username} saved!")
-    return redirect('browse')

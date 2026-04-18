@@ -95,20 +95,6 @@ class RestaurantRequestForm(forms.ModelForm):
             'budget_max':  forms.NumberInput(attrs={'placeholder': '1000', 'step': '0.01', 'min': '0'}),
         }
 
-
-class MessageForm(forms.ModelForm):
-    class Meta:
-        model = Message
-        fields = ['body']
-        widgets = {
-            'body': forms.Textarea(attrs={
-                'rows': 3,
-                'placeholder': 'Write your message...',
-                'class': 'msg-input',
-            })
-        }
-
-
 class BrowseFilterForm(forms.Form):
     CATEGORY_CHOICES = [('', 'All Categories')] + [
         ('Vegetables', 'Vegetables'),

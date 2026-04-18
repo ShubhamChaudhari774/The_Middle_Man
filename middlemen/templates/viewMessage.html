@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<br><br><h1>View Message</h1><br><br>
+
+
+<p>From: {{ message.MessageFrom }}</p>
+<p>To: {{ message.MessageTo }}</p><br>
+
+<p>Body:</p><br><p>{{ message.MessageBody }}</p>
+<br><br>
+<a href="/messages/"><u>Back</u></a>
+
+
+{% endblock %}
