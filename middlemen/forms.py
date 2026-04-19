@@ -55,10 +55,18 @@ class LoginForm(AuthenticationForm):
 
 
 class ProfileEditForm(forms.ModelForm):
-    first_name = forms.CharField(max_length=150, required=False,
-        widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
-    last_name = forms.CharField(max_length=150, required=False,
-        widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
+    """
+    business_name = forms.CharField(max_length=50, required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Your Business Name'}))
+    city = forms.CharField(max_length=150, required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'City'}))
+    state = forms.CharField(max_length=2, required=False,
+        widget=forms.TextInput(attrs={'placeholder' : "State e.g. 'NE'"}))
+    zip_code = forms.CharField(max_length=5, require=False,
+        widget=forms.TextInput(attrs={'placeholder':'12345'}))
+    bio = forms.CharField(max_length=150, required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Your Bio'}))
+    avatar = forms.ImageField() """
 
     class Meta:
         model = Profile

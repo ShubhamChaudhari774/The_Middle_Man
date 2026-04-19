@@ -36,11 +36,11 @@ class Profile(models.Model):
 
     # Helper method to check if user is a producer
     def is_producer(self):
-        return self.role == 'producer'
+        return self.role.lower() == 'producer'
 
     # Helper method to check if user is a buyer
     def is_buyer(self):
-        return self.role == 'buyer'
+        return self.role.lower() == 'buyer'
 
 class Producer(models.Model):
     # Username field (should be the same as the username field in the Django User table)

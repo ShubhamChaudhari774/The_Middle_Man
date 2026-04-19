@@ -252,11 +252,11 @@ def browse(request):
 # ─── PRODUCER PROFILE (manage own) ───────────────────────────────────────────
 @login_required
 def producer_profile(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    if not profile.is_producer():
+    profile = get_object_or_404(Profile, user_id=request.user.id)
+    if profile.is_buyer():
         return redirect('buyer_profile')
 
-    products = profile.products.all().order_by('-created_at')
+    products = Product.objects.filter(producer_id=request.user.id).order_by('-created_at')
     product_form = ProductForm()
 
     if request.method == 'POST':
@@ -291,8 +291,8 @@ def producer_profile(request):
             return redirect('producer_profile')
 
     profile_form = ProfileEditForm(instance=profile, initial={
-        'first_name': profile.user.first_name,
-        'last_name':  profile.user.last_name,
+        'first_name': request.user.first_name,
+        'last_name':  request.user.last_name,
     })
     return render(request, 'producer_profile.html', {
         'profile': profile,
@@ -305,7 +305,7 @@ def producer_profile(request):
 # ─── BUYER PROFILE (manage own) ──────────────────────────────────────────────
 @login_required
 def buyer_profile(request):
-    profile = get_object_or_404(Profile, user=request.user)
+    profile = get_object_or_404(Profile, user_id=request.user.id)
     if not profile.is_buyer():
         return redirect('producer_profile')
 
