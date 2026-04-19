@@ -2,5 +2,6 @@ Sites/Materials used:
 
 https://docs.djangoproject.com/en/6.0/ -- Caeden made use of the Django Documentation as a reference for Django
 https://developer.mozilla.org/en-US/docs/Web/HTML -- Caeden used this site for reminders on HTML
+https://developer.mozilla.org/en-US/docs/Web/CSS -- Caeden used this site for reminders on CSS
 https://docs.python.org/3/library/os.html -- Caeden used this site for reminders on the Python standard library
 https://docs.python.org/3/library/json.html#module-json -- Caeden used this site for reminders on JSON module in Python
