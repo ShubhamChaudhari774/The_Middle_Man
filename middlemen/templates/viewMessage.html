@@ -3,12 +3,12 @@
 <br><br><h1>View Message</h1><br><br>
 
 
-<p>From: {{ message.MessageFrom }}</p>
-<p>To: {{ message.MessageTo }}</p><br>
+<p id="FromInfo">From: {{ message.MessageFrom }}</p>
+<p id="ToInfo">To: {{ message.MessageTo }}</p><br>
 
-<p>Body:</p><br><p>{{ message.MessageBody }}</p>
+<p id="msgBody">Body:</p><br><p>{{ message.MessageBody }}</p>
 <br><br>
-<a href="/messages/"><u>Back</u></a>
+<a class="BackButton" href="/messages/"><u>Back</u></a>
 
 
 {% endblock %}
