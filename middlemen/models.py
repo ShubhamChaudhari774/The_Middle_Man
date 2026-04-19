@@ -49,6 +49,9 @@ class Product(models.Model):
         ('Meat & Poultry', 'Meat & Poultry'),
     ]
 
+    # Whether the product is organic or not
+    is_organic = models.BooleanField(default=False)
+
     # Product belongs to a producer profile
     producer = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='products')
 
@@ -73,6 +76,7 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} by {self.producer.business_name or self.producer.user.username}"
+
 
 class Customer(models.Model):
     # Username field (should be the same as the username field in the Django User table)
