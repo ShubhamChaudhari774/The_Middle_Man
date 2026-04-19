@@ -295,3 +295,23 @@ footer          { background: #1a1f18; padding: 3rem 2.5rem 1.5rem; margin-top: 
   padding: 20px;
   justify-content: safe center;
 }
+.messageViewHead {
+  padding: 20px;
+  height: 100px;
+  width: 500px;
+  display: flex;
+  justify-content: left;
+  background-color: rgb(193, 223, 193);
+}
+.messageView {
+  padding: 20px;
+  height: 500px;
+  width: 500px;
+  display: flex;
+  justify-content: left;
+  background-color: rgb(193, 223, 193);
+}
+#messageViewOutside {
+  display: flex;
+  justify-content: safe center;
+}
