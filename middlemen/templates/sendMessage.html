@@ -1,22 +1,39 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
 <form action="/sendMessage/" method="post">
     {% csrf_token %}
 
     <div class="messagesHeader">
         <h1><u>Send a Message</u></h1>
     </div>
-
-    <div class="messagesBody">
-        <label>To: </label><input id="ToTextBox" type="text" name="To">
-    </div>
-    <div class="messagesBody">
-        <label>From: </label><input id="FromTextBox" type="text" name="From">
-    </div>    
-    <div class="messagesBody">
-        <label>Message: </label><textarea id="MessageTextbox" name="message" rows="10" cols="50"></textarea>
+    <div id="messageViewOutside">
+        <div>
+            <div class="messageViewHead">
+                <div>
+                    <div class="messageHeader">
+                        <div>
+                            <label>To: </label><input id="ToTextBox" type="text" name="To"><br><br>
+                            <label>From: </label><input id="FromTextBox" type="text" name="From"><br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="messageView">
+                <div>
+                    <div class="messageBody">
+                        <div>
+                            <p>Message:</p>
+                            <br>
+                        </div>
+                        <div>
+                            <textarea id="MessageTextbox" name="message" rows="10" cols="50"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="messagesFooter">
         <button id="submitButton" class="messageButtons" type="submit">Send Message</button>
@@ -25,5 +42,4 @@
         <a href="/messages" class="messageButtons"><u>Back</u></a>
     </div>
 </form>
-
 {% endblock %}
