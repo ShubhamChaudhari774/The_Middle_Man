@@ -126,6 +126,17 @@ def loginUser(request):
                 login(request, user)
             else:
                 return redirect(loginView)
+
+            if request.user.id not in Profile.objects.values_list("user_id", flat=True):
+                if request.user.username in Customer.objects.values_list("username", flat=True):
+                    user_role = "Buyer"
+                elif request.user.username in Producer.objects.values_list("username", flat=True):
+                    user_role = "Producer"
+                else:
+                    user_role = "Unknown"
+                profile = Profile(user_id=request.user.id, role=user_role)
+                profile.save()
+
             return redirect(home)
         else:
             return redirect(loginView)

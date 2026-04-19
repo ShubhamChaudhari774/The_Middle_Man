@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 
 
@@ -8,9 +9,11 @@ class Profile(models.Model):
         ('producer', 'Producer'),
         ('buyer', 'Buyer'),
     ]
-
+    
     # One-to-one link with Django's built-in User model
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    #user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
+
+    user_id = models.IntegerField(primary_key=True, null=False, blank=False, default=0)
 
     # Role of the user (producer or buyer)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='buyer')
@@ -38,74 +41,6 @@ class Profile(models.Model):
     # Helper method to check if user is a buyer
     def is_buyer(self):
         return self.role == 'buyer'
-
-
-class Product(models.Model):
-    # Product categories for filtering and organization
-    CATEGORY_CHOICES = [
-        ('Vegetables', 'Vegetables'),
-        ('Fruits', 'Fruits'),
-        ('Dairy & Eggs', 'Dairy & Eggs'),
-        ('Meat & Poultry', 'Meat & Poultry'),
-    ]
-
-    # Whether the product is organic or not
-    is_organic = models.BooleanField(default=False)
-
-    # Product belongs to a producer profile
-    producer = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='products')
-
-    # Basic product information
-    name = models.CharField(max_length=200)
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-    description = models.TextField(blank=True)
-
-    # Pricing and unit (e.g., per lb, per unit)
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    unit = models.CharField(max_length=30, default='lb')
-
-    # Availability status of product
-    available = models.BooleanField(default=True)
-
-    # Optional product image
-    image = models.ImageField(upload_to='products/', blank=True, null=True)
-
-    # Timestamps for tracking product lifecycle
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.name} by {self.producer.business_name or self.producer.user.username}"
-
-
-class Customer(models.Model):
-    # Username field (should be the same as the username field in the Django User table)
-    username = models.CharField(primary_key=True, max_length=30)
-
-    def createCustomer(username: str) -> int:
-        """
-        This function is intended to be called by the view to create a new Customer object in the Customer table.
-        
-        Returns: 0 if succeeded; 1 if failed
-
-        """
-        try:
-            customer = Customer.objects.get(username=username)
-            return 1
-        except:
-            newCustomer = Customer(username=username)
-            newCustomer.save()
-            return 0
-    
-    def deleteCustomer(username: str) -> int:
-        """
-        This function is intended to be called by the view to delete a Customer object in the Customer table.
-        """
-        try:
-            customer = Customer.objects.get(username=username)
-            customer.delete()
-        except:
-            return None
 
 class Producer(models.Model):
     # Username field (should be the same as the username field in the Django User table)
@@ -137,6 +72,75 @@ class Producer(models.Model):
             producer.delete()
         except:
             return None
+
+class Customer(models.Model):
+    # Username field (should be the same as the username field in the Django User table)
+    username = models.CharField(primary_key=True, max_length=30)
+
+    def createCustomer(username: str) -> int:
+        """
+        This function is intended to be called by the view to create a new Customer object in the Customer table.
+        
+        Returns: 0 if succeeded; 1 if failed
+
+        """
+        try:
+            customer = Customer.objects.get(username=username)
+            return 1
+        except:
+            newCustomer = Customer(username=username)
+            newCustomer.save()
+            return 0
+    
+    def deleteCustomer(username: str) -> int:
+        """
+        This function is intended to be called by the view to delete a Customer object in the Customer table.
+        """
+        try:
+            customer = Customer.objects.get(username=username)
+            customer.delete()
+        except:
+            return None
+
+
+class Product(models.Model):
+    # Product categories for filtering and organization
+    CATEGORY_CHOICES = [
+        ('Vegetables', 'Vegetables'),
+        ('Fruits', 'Fruits'),
+        ('Dairy & Eggs', 'Dairy & Eggs'),
+        ('Meat & Poultry', 'Meat & Poultry'),
+    ]
+
+    # Whether the product is organic or not
+    is_organic = models.BooleanField(default=False)
+
+    # Product belongs to a producer profile
+    producer = models.ForeignKey(Producer, on_delete=models.CASCADE, related_name='products')
+
+    # Basic product information
+    name = models.CharField(max_length=200)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    description = models.TextField(blank=True)
+
+    # Pricing and unit (e.g., per lb, per unit)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    unit = models.CharField(max_length=30, default='lb')
+
+    # Availability status of product
+    available = models.BooleanField(default=True)
+
+    # Optional product image
+    image = models.ImageField(upload_to='products/', blank=True, null=True)
+
+    # Timestamps for tracking product lifecycle
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} by {self.producer.business_name or self.producer.user.username}"
+
+
 
 class RestaurantRequest(models.Model):
     # Categories for requested items
