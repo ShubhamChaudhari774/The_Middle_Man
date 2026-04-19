@@ -14,7 +14,7 @@
     <tr class="messageRow">
         <td>{{ message.MessageFrom }}</td>
         <td>{% if message.IsNewMessage %}Unread{% else %}Read{% endif %}</td>
-        <td><br><br><a href="/viewMessage/{{ message.id }}" class="messageButtons">View Message</a><br><br><br><br><br><a href="/deleteMessage/{{ message.id }}" class="messageButtons">Delete Message</a><br><br></td>
+        <td><br><br><a href="/viewMessage/{{ message.id }}" class="messageButtons">View Message</a><br><br><br><br><br><a href="/deleteMessage/{{ message.id }}" class="messageButtons">Delete Message</a><br><br><br></td>
     </tr>
 {% endfor %}
 </table>
