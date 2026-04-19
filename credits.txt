@@ -5,3 +5,6 @@ https://developer.mozilla.org/en-US/docs/Web/HTML -- Caeden used this site for r
 https://developer.mozilla.org/en-US/docs/Web/CSS -- Caeden used this site for reminders on CSS
 https://docs.python.org/3/library/os.html -- Caeden used this site for reminders on the Python standard library
 https://docs.python.org/3/library/json.html#module-json -- Caeden used this site for reminders on JSON module in Python
+https://www.youtube.com/watch?v=eBsc65jTKvw - Aditi used this to understand Role-Based permissions for pages
+https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/repeat - Aditi used this to create repeating rows for the browse page
+https://docs.djangoproject.com/en/6.0/ref/models/fields/ - Aditi used this to understand models
