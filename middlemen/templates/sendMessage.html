@@ -5,20 +5,25 @@
 <form action="/sendMessage/" method="post">
     {% csrf_token %}
 
-    <h1>Send a Message</h1><br><br>
+    <div class="messagesHeader">
+        <h1><u>Send a Message</u></h1>
+    </div>
 
-    <label>To: </label><input id="ToTextBox" type="text" name="To"><br><br>
-    <label>From: </label><input id="FromTextBox" type="text" name="From"><br><br>
-
-    <label>Message: </label><br><br><textarea id="MessageTextbox" name="message" rows="10" cols="50"></textarea><br><br>
-
-    <button id="submitButton" class="messageButtons" type="submit">Send Message</button>
-
-    <br><br><br><br><a href="/messages" class="messageButtons"><u>Back</u></a>
-
+    <div class="messagesBody">
+        <label>To: </label><input id="ToTextBox" type="text" name="To">
+    </div>
+    <div class="messagesBody">
+        <label>From: </label><input id="FromTextBox" type="text" name="From">
+    </div>    
+    <div class="messagesBody">
+        <label>Message: </label><textarea id="MessageTextbox" name="message" rows="10" cols="50"></textarea>
+    </div>
+    <div class="messagesFooter">
+        <button id="submitButton" class="messageButtons" type="submit">Send Message</button>
+    </div>
+    <div class="messagesFooter">
+        <a href="/messages" class="messageButtons"><u>Back</u></a>
+    </div>
 </form>
-
-
-
 
 {% endblock %}

@@ -281,15 +281,17 @@ footer          { background: #1a1f18; padding: 3rem 2.5rem 1.5rem; margin-top: 
   background-color: rgb(193, 223, 193);
 }
 .messagesBody {
-  padding: 50px;
+  padding: 25px;
   display: flex;
   justify-content: safe center;
 }
 .messagesHeader {
   display: flex;
+  padding: 20px;
   justify-content: safe center;
 }
 .messagesFooter {
   display: flex;
+  padding: 20px;
   justify-content: safe center;
 }
