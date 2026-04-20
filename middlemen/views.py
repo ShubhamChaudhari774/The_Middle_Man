@@ -21,6 +21,8 @@ def messagesView(request):
 def viewMessage(request, msgID):
     if request.user.is_authenticated:
         message = Message.objects.get(id=msgID)
+        message.IsNewMessage = False
+        message.save()
         return render(request, "viewMessage.html", {'message': message})
     else:
         return redirect(home)
