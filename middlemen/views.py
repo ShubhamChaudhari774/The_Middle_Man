@@ -198,6 +198,7 @@ def browse(request):
     state     = request.GET.get('state', '')
     max_price = request.GET.get('max_price', '')
     avail_only = request.GET.get('available_only', '')
+    organic   = request.GET.get('organic', '')
     sort      = request.GET.get('sort', 'name')
 
     if is_producer:
@@ -219,7 +220,7 @@ def browse(request):
         }
     else:
         # Buyer / guest sees: product listings from producers
-        qs = Product.objects.select_related('producer__user').order_by('name')
+        qs = Product.objects.select_related('producer__user').order_by('producer__user')
         if search:
             qs = qs.filter(Q(name__icontains=search) | Q(producer__business_name__icontains=search))
         if category:
@@ -233,6 +234,8 @@ def browse(request):
                 pass
         if avail_only:
             qs = qs.filter(available=True)
+        if organic == "true":
+            qs = qs.filter(organic=True)
         if sort == 'price':
             qs = qs.order_by('price')
         elif sort == '-price':
@@ -366,43 +369,3 @@ def buyer_profile(request):
         'req_form': req_form,
         'profile_message' : profile_message
     })
-
-def browse(request): #This is the view for the browse page, it will show all available products to the user, if the user is a producer, it will only show the products that they have listed
-
-    # Everyone sees all available products
-    products = Product.objects.filter(available=True)
-
-    # if user is logged in and is a producer, there is a limited view
-    if request.user.is_authenticated:
-        profile = get_object_or_404(Profile, user_id=request.user.id)
-
-        if profile.role == "producer":
-            products = Product.objects.filter(
-                producer=profile,
-                available=True
-            )
-
-    product_category = request.GET.get("category")
-    min_price = request.GET.get("min_price")
-    max_price = request.GET.get("max_price")
-    organic = request.GET.get("organic")
-
-    # Product category filter (fruit, vegetable, dairy, meat, etc.)
-    if product_category and product_category != "all":
-        products = products.filter(category=product_category)
-
-    # Price filters (min and max price)
-    if min_price:
-        products = products.filter(price__gte=min_price)
-
-    if max_price:
-        products = products.filter(price__lte=max_price)
-
-    # Organic versus inorganic filter
-    if organic == "true":
-        products = products.filter(organic=True)
-
-    return render(request, "browse.html", {
-        "products": products
-    }
-    )
