@@ -183,7 +183,6 @@ class Message(models.Model):
     # New Message
     IsNewMessage = models.BooleanField()
 
-
 class SavedProducer(models.Model):
     # Buyer who saved a producer
     buyer = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='saved_producers')
@@ -200,5 +199,4 @@ class SavedProducer(models.Model):
 
     def __str__(self):
         return f"{self.buyer} saved {self.producer}"
-    
     
