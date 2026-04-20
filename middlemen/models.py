@@ -200,3 +200,4 @@ class SavedProducer(models.Model):
 
     def __str__(self):
         return f"{self.buyer} saved {self.producer}"
+    
