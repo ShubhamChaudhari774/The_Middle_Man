@@ -126,4 +126,3 @@ class BrowseFilterForm(forms.Form):
         widget=forms.NumberInput(attrs={'placeholder': 'Max price', 'step': '0.01'}))
     available_only = forms.BooleanField(required=False)
     sort     = forms.ChoiceField(choices=SORT_CHOICES, required=False)
-
