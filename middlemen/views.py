@@ -34,7 +34,7 @@ def sendMessageView(request):
 def sendMessageAction(request):
     if request.user.is_authenticated:
         MessageTo = request.POST['To']
-        MessageFrom = request.POST['From']
+        MessageFrom = request.user.username
         MessageBody = request.POST['message']
         IsNewMessage = True
         message = Message(MessageTo=MessageTo, MessageFrom=MessageFrom, MessageBody=MessageBody, IsNewMessage=IsNewMessage)
