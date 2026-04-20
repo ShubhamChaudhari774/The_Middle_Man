@@ -113,10 +113,10 @@ class Product(models.Model):
     ]
 
     # Whether the product is organic or not
-    is_organic = models.BooleanField(default=False)
+    organic = models.BooleanField(default=False)
 
     # Product belongs to a producer profile
-    producer = models.ForeignKey(Producer, on_delete=models.CASCADE, related_name='products')
+    producer = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='products')
 
     # Basic product information
     name = models.CharField(max_length=200)
@@ -125,7 +125,7 @@ class Product(models.Model):
 
     # Pricing and unit (e.g., per lb, per unit)
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    unit = models.CharField(max_length=30, default='lb')
+    weight = models.IntegerField(blank=True, null=True)
 
     # Availability status of product
     available = models.BooleanField(default=True)

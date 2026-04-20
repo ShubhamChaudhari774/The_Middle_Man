@@ -85,12 +85,13 @@ class ProfileEditForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'category', 'description', 'price', 'unit', 'available', 'image']
+        fields = ['name', 'organic', 'category', 'description', 'price', 'weight', 'available', 'image']
+        help_texts = {'weight' : "lb(s)"}
         widgets = {
             'name':        forms.TextInput(attrs={'placeholder': 'e.g. Organic Tomatoes'}),
             'description': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe your product...'}),
             'price':       forms.NumberInput(attrs={'placeholder': '0.00', 'step': '0.01', 'min': '0'}),
-            'unit':        forms.TextInput(attrs={'placeholder': 'lb, dozen, pint...'}),
+            'weight':        forms.NumberInput(attrs={'placeholder': '0'}),
         }
 
 

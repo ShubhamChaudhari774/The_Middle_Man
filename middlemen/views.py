@@ -258,7 +258,9 @@ def producer_profile(request):
 
     products = Product.objects.filter(producer_id=request.user.id).order_by('-created_at')
     product_form = ProductForm()
-    message = ''
+    profile_message = ''
+    product_message = ''
+    new_product = False
     if request.method == 'POST':
         action = request.POST.get('action')
         print(action)
@@ -266,17 +268,20 @@ def producer_profile(request):
             pf = ProfileEditForm(request.POST, request.FILES, instance=profile)
             if pf.is_valid():
                 pf.save()
-                message = "Profile updated!"
+                profile_message = "Profile updated!"
+        elif action == 'new_product':
+            new_product = True
         elif action == 'add_product':
             product_form = ProductForm(request.POST, request.FILES)
             if product_form.is_valid():
                 prod = product_form.save(commit=False)
+                prod.producer_id = request.user.id
                 prod.save()
-                message = f"'{prod.name}' added to your listings."
+                product_message = f"'{prod.name}' added to your listings."
         elif action == 'delete_product':
             pid = request.POST.get('product_id')
-            Product.objects.filter(id=pid, producer=profile).delete()
-            messages.success(request, "Product removed.")
+            Product.objects.filter(id=pid).delete()
+            product_message = "Product removed."
         elif action == 'toggle_available':
             pid = request.POST.get('product_id')
             prod = get_object_or_404(Product, id=pid, producer=profile)
@@ -296,7 +301,9 @@ def producer_profile(request):
         'profile_form': profile_form,
         'product_form': product_form,
         'name' : name1 + " " + name2,
-        'message' : message
+        'prof_message' : profile_message,
+        'prod_message' : product_message,
+        'new_product' : new_product
     })
 
 

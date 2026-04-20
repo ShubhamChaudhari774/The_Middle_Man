@@ -2,5 +2,66 @@
 
 {% block user_items %}
 
+<h1 class=""profile-name>Your Products</h1>
+
+<div class="profile-card">
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="btn">
+            <button type="submit" name="action" value="new_product">Create Product</button>
+        </div>
+    </form>
+
+    {% if prod_message %}
+
+    <p style="text-align: center;">{{ prod_message }}</p>
+
+    {% endif %}
+
+    {% if new_product %}
+    <form method="post">
+    {% csrf_token %}
+    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 1rem;">
+        {% for field in product_form %}
+        <div class="profile-header">
+            {{ field.label_tag }}
+        </div>
+        <div class="form-control">
+            {{ field }}
+            {{ field.help_text}}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="btn">
+        <button type="submit" name="action" value="add_product">Add Product</button>
+    </div>
+
+    </form>
+    {% endif %}
+
+    {% for product in products %}
+
+    <div class="profile-card">
+        <div class="">
+            <h4 style="text-align: center;">Product Name:  {{ product.name }}</>
+        </div>
+        <div>
+
+        </div>
+            <ul>
+                <li>Product Name:  {{ product.name }}</li>
+                <li>Category:  {{ product.category }}</li>
+                <li>Description:  {{ product.description }}</li>
+                <li>Price:  {{ product.price }}</li>
+                <li>Weight:  {{ product.weight }}</li>
+            </ul>
+            <a href='{{ product.image }}'></a>
+        </table>
+    </div>
+
+    {% endfor %}
+
 {% endblock %}
 
