@@ -395,7 +395,7 @@ def browse(request): #This is the view for the browse page, it will show all ava
 
     # Organic versus inorganic filter
     if organic == "true":
-        products = products.filter(is_organic=True)
+        products = products.filter(organic=True)
 
     return render(request, "browse.html", {
         "products": products
