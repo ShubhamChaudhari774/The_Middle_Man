@@ -67,6 +67,8 @@ class ProfileEditForm(forms.ModelForm):
     bio = forms.CharField(max_length=150, required=False,
         widget=forms.TextInput(attrs={'placeholder': 'Your Bio'}))
     avatar = forms.ImageField() """
+    email = forms.CharField(max_length=50, required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
 
     class Meta:
         model = Profile
@@ -76,7 +78,7 @@ class ProfileEditForm(forms.ModelForm):
             'city':          forms.TextInput(attrs={'placeholder': 'City'}),
             'state':         forms.TextInput(attrs={'placeholder': 'State'}),
             'zip_code':      forms.TextInput(attrs={'placeholder': 'Zip'}),
-            'bio':           forms.Textarea(attrs={'rows': 3, 'placeholder': 'Tell buyers about your farm...'}),
+            'bio':           forms.Textarea(attrs={'rows': 3, 'placeholder': 'Tell buyers about your business...'}),
         }
 
 

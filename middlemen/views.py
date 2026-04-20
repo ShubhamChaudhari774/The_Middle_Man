@@ -258,47 +258,45 @@ def producer_profile(request):
 
     products = Product.objects.filter(producer_id=request.user.id).order_by('-created_at')
     product_form = ProductForm()
-
+    message = ''
     if request.method == 'POST':
         action = request.POST.get('action')
+        print(action)
         if action == 'edit_profile':
             pf = ProfileEditForm(request.POST, request.FILES, instance=profile)
             if pf.is_valid():
                 pf.save()
-                profile.user.first_name = pf.cleaned_data.get('first_name', '')
-                profile.user.last_name  = pf.cleaned_data.get('last_name', '')
-                profile.user.save()
-                messages.success(request, "Profile updated!")
-                return redirect('producer_profile')
+                message = "Profile updated!"
         elif action == 'add_product':
             product_form = ProductForm(request.POST, request.FILES)
             if product_form.is_valid():
                 prod = product_form.save(commit=False)
-                prod.producer = profile
                 prod.save()
-                messages.success(request, f"'{prod.name}' added to your listings.")
-                return redirect('producer_profile')
+                message = f"'{prod.name}' added to your listings."
         elif action == 'delete_product':
             pid = request.POST.get('product_id')
             Product.objects.filter(id=pid, producer=profile).delete()
             messages.success(request, "Product removed.")
-            return redirect('producer_profile')
         elif action == 'toggle_available':
             pid = request.POST.get('product_id')
             prod = get_object_or_404(Product, id=pid, producer=profile)
             prod.available = not prod.available
             prod.save()
-            return redirect('producer_profile')
 
-    profile_form = ProfileEditForm(instance=profile, initial={
-        'first_name': request.user.first_name,
-        'last_name':  request.user.last_name,
-    })
+    name1 = request.user.first_name
+    name2 = request.user.last_name
+    
+
+    profile_form = ProfileEditForm(initial={
+            'email': request.user.email,
+            }, instance=profile)
     return render(request, 'producer_profile.html', {
         'profile': profile,
         'products': products,
         'profile_form': profile_form,
         'product_form': product_form,
+        'name' : name1 + " " + name2,
+        'message' : message
     })
 
 
@@ -306,7 +304,7 @@ def producer_profile(request):
 @login_required
 def buyer_profile(request):
     profile = get_object_or_404(Profile, user_id=request.user.id)
-    if not profile.is_buyer():
+    if profile.is_producer():
         return redirect('producer_profile')
 
     saved = SavedProducer.objects.filter(buyer=profile).select_related('producer__user')
