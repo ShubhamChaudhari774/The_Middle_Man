@@ -319,52 +319,62 @@ def buyer_profile(request):
         return redirect('producer_profile')
 
     saved = SavedProducer.objects.filter(buyer=profile).select_related('producer__user')
-    my_requests = profile.requests.all().order_by('-created_at')
+    my_requests = RestaurantRequest.objects.filter(buyer_id=request.user.id).order_by('-created_at')
     req_form = RestaurantRequestForm()
 
     profile_message = ""
+    req_message = ""
+    new_req = False
 
     if request.method == 'POST':
         action = request.POST.get('action')
+        if action[-1].isnumeric():
+            values = action.split()
+            action = values[0]
+            id = values[1]
+        print(action)
         if action == 'edit_profile':
             pf = ProfileEditForm(request.POST, request.FILES, instance=profile)
             if pf.is_valid():
                 pf.save()
-                profile.user.first_name = pf.cleaned_data.get('first_name', '')
-                profile.user.last_name  = pf.cleaned_data.get('last_name', '')
                 profile.user.save()
                 profile_message = "Profile updated!"
-                return redirect('buyer_profile')
+        elif action == "new_req":
+            new_req = True
         elif action == 'add_request':
             req_form = RestaurantRequestForm(request.POST)
             if req_form.is_valid():
                 rq = req_form.save(commit=False)
                 rq.buyer = profile
                 rq.save()
-                profile_message = "Request posted! Producers can now find you."
-                return redirect('buyer_profile')
+                req_message = "Request posted! Producers can now find you."
         elif action == 'delete_request':
-            rid = request.POST.get('request_id')
-            RestaurantRequest.objects.filter(id=rid, buyer=profile).delete()
-            profile_message = "Request removed."
-            return redirect('buyer_profile')
-        elif action == 'unsave':
-            pid = request.POST.get('producer_id')
-            SavedProducer.objects.filter(buyer=profile, producer_id=pid).delete()
-            profile_message = "Removed from saved."
-            return redirect('buyer_profile')
+            RestaurantRequest.objects.filter(id=id).delete()
+            req_message = "Request removed."
+        elif action == "toggle_active":
+            req_obj = get_object_or_404(RestaurantRequest, id=id)
+            req_obj.active = not req_obj.active
+            req_obj.save()
+            req_message = "Request toggled."
+            redirect("buyer_profile")
 
-    profile_form = ProfileEditForm(instance=profile, initial={
-        'first_name': profile.user.first_name,
-        'last_name':  profile.user.last_name,
-    })
+    name1 = request.user.first_name
+    name2 = request.user.last_name
+
+    profile_form = ProfileEditForm(initial={
+            'email': request.user.email,
+            }, instance=profile)
+    
     return render(request, 'buyer_profile.html', {
         'profile': profile,
         'saved': saved,
-        'my_requests': my_requests,
+        'name' : name1 + " " + name2,
+        'requests': my_requests,
         'profile_form': profile_form,
         'req_form': req_form,
-        'profile_message' : profile_message
+        'prof_message' : profile_message,
+        'req_message' : req_message,
+        'new_req' : new_req
     })
 
 def browse(request): #This is the view for the browse page, it will show all available products to the user, if the user is a producer, it will only show the products that they have listed

@@ -1,6 +1,70 @@
 {% extends 'profile.html' %}
 
 {% block user_items %}
-<h1>Buyer Profile</h1>
-<p>Buyer profile page</p>
+<h1 class=""profile-name>Your Requests</h1>
+
+<div class="profile-card">
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="btn">
+            <button type="submit" name="action" value="new_req">Create Request</button>
+        </div>
+    </form>
+
+    {% if req_message %}
+
+    <p style="text-align: center;">{{ req_message }}</p>
+
+    {% endif %}
+
+    {% if new_req %}
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 1rem;">
+        {% for field in req_form %}
+        <div class="profile-header">
+            {{ field.label_tag }}
+        </div>
+        <div class="form-control">
+            {{ field }}
+            {{ field.help_text}}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="btn">
+        <button type="submit" name="action" value="add_request">Add Request</button>
+    </div>
+
+    </form>
+    {% endif %}
+
+    {% for req in requests %}
+
+    <div class="profile-card">
+        <div class="">
+            <h4 style="text-align: center;">Request Name:  {{ req.title }}</h4>
+        </div>
+        <div>
+
+        </div>
+            <ul>
+                <li>Category:  {{ req.category }}</li>
+                <li>Description:  {{ req.description }}</li>
+                <li>Budget:  ${{ req.budget_min }} - ${{ req.budget_max }}</li>
+                <li>Active:  {{ req.active }}</li>
+            </ul>
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="Product Photo">
+            {% endif %}
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="toggle_active {{ req.id }}">Toggle Active</button>
+        <button type="submit" name="action" value="delete_request {{ req.id }}">Remove Request</button>
+    </form>
+
+    {% endfor %}
 {% endblock %}
