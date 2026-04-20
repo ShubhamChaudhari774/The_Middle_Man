@@ -2,31 +2,51 @@
 {% block content %}
 <form action="{% url 'signupUser' %}" method="post">
     {% csrf_token %}
-    <h1>Sign Up</h1>
-    <label id="usernameTextBoxLabel">Username: </label><input type="text" id="username" name="username">
-    <br>
-    <br>
-    <label id="passwordTextBoxLabel">Password: </label><input type="password" id="password" name="password">
-    <br>
-    <br>
-    <label id="reenteredPasswordTextBoxLabel">Reenter Password: </label><input type="password" id="reenteredPassword" name="reenteredPassword">
-    <br>
-    <br>
-    <label id="emailTextboxLabel">Email: </label><input type="email" id="email" name="email">
-    <br>
-    <br>
-    <label id="firstNameTextboxLabel">First Name: </label><input type="text" id="firstName" name="firstName">
-    <br>
-    <br>
-    <label id="lastNameTextboxLabel">Last Name: </label><input type="text" id="lastName" name="lastName">
-    <br>
-    <br>
-    <label id="producerRadioLabel">Producer</label><input type="radio" name="userType" value="producer">
-    <label id="customerRadioLabel">Customer</label><input type="radio" name="userType" value="customer">
-    <br>
-    <br>
-    <button type="Submit">Sign up</button>
-    <br>
-    <br>
+    <div class="messagesHeader">
+        <h1>Sign Up</h1>
+    </div>
+
+    <div class="signupViewOutside">
+        <div>
+            <div class="signupViewInside">
+                <div>
+                    <label id="usernameTextBoxLabel">Username: </label><input type="text" id="username" name="username">
+                    <br>
+                    <br>
+                    <label id="passwordTextBoxLabel">Password: </label><input type="password" id="password" name="password">
+                    <br>
+                    <br>
+                    <label id="reenteredPasswordTextBoxLabel">Reenter Password: </label><input type="password" id="reenteredPassword" name="reenteredPassword">
+                    <br>
+                    <br>
+                    <label id="emailTextboxLabel">Email: </label><input type="email" id="email" name="email">
+                    <br>
+                    <br>
+                    <label id="firstNameTextboxLabel">First Name: </label><input type="text" id="firstName" name="firstName">
+                    <br>
+                    <br>
+                    <label id="lastNameTextboxLabel">Last Name: </label><input type="text" id="lastName" name="lastName">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <p>Are you a producer or consumer?</p>
+                    <br>
+                    <br>
+                    <label id="producerRadioLabel">Producer </label><input type="radio" name="userType" value="producer">
+                    <br>
+                    <br>
+                    <label id="customerRadioLabel">Customer </label><input type="radio" name="userType" value="customer">
+                    <br>
+                    <br>
+                    <button type="Submit">Sign up</button>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </form>
 {% endblock %}
