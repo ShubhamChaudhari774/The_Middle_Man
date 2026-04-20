@@ -61,6 +61,12 @@
         </table>
     </div>
 
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="toggle_available {{ product.id }}">Toggle Availability</button>
+        <button type="submit" name="action" value="delete_product {{ product.id }}">Remove Product</button>
+    </form>
+
     {% endfor %}
 
 {% endblock %}

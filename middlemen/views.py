@@ -263,6 +263,9 @@ def producer_profile(request):
     new_product = False
     if request.method == 'POST':
         action = request.POST.get('action')
+        values = action.split()
+        action = values[0]
+        id = values[1]
         print(action)
         if action == 'edit_profile':
             pf = ProfileEditForm(request.POST, request.FILES, instance=profile)
@@ -279,12 +282,10 @@ def producer_profile(request):
                 prod.save()
                 product_message = f"'{prod.name}' added to your listings."
         elif action == 'delete_product':
-            pid = request.POST.get('product_id')
-            Product.objects.filter(id=pid).delete()
+            Product.objects.filter(id=id).delete()
             product_message = "Product removed."
         elif action == 'toggle_available':
-            pid = request.POST.get('product_id')
-            prod = get_object_or_404(Product, id=pid, producer=profile)
+            prod = get_object_or_404(Product, id=id)
             prod.available = not prod.available
             prod.save()
 
