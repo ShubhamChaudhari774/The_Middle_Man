@@ -368,7 +368,7 @@ def browse(request): #This is the view for the browse page, it will show all ava
 
     # if user is logged in and is a producer, there is a limited view
     if request.user.is_authenticated:
-        profile = request.user.profile
+        profile = get_object_or_404(Profile, user_id=request.user.id)
 
         if profile.role == "producer":
             products = Product.objects.filter(
