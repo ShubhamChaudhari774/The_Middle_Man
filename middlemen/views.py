@@ -322,6 +322,8 @@ def buyer_profile(request):
     my_requests = profile.requests.all().order_by('-created_at')
     req_form = RestaurantRequestForm()
 
+    profile_message = ""
+
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'edit_profile':
@@ -331,7 +333,7 @@ def buyer_profile(request):
                 profile.user.first_name = pf.cleaned_data.get('first_name', '')
                 profile.user.last_name  = pf.cleaned_data.get('last_name', '')
                 profile.user.save()
-                messages.success(request, "Profile updated!")
+                profile_message = "Profile updated!"
                 return redirect('buyer_profile')
         elif action == 'add_request':
             req_form = RestaurantRequestForm(request.POST)
@@ -339,17 +341,17 @@ def buyer_profile(request):
                 rq = req_form.save(commit=False)
                 rq.buyer = profile
                 rq.save()
-                messages.success(request, "Request posted! Producers can now find you.")
+                profile_message = "Request posted! Producers can now find you."
                 return redirect('buyer_profile')
         elif action == 'delete_request':
             rid = request.POST.get('request_id')
             RestaurantRequest.objects.filter(id=rid, buyer=profile).delete()
-            messages.success(request, "Request removed.")
+            profile_message = "Request removed."
             return redirect('buyer_profile')
         elif action == 'unsave':
             pid = request.POST.get('producer_id')
             SavedProducer.objects.filter(buyer=profile, producer_id=pid).delete()
-            messages.success(request, "Removed from saved.")
+            profile_message = "Removed from saved."
             return redirect('buyer_profile')
 
     profile_form = ProfileEditForm(instance=profile, initial={
@@ -362,6 +364,7 @@ def buyer_profile(request):
         'my_requests': my_requests,
         'profile_form': profile_form,
         'req_form': req_form,
+        'profile_message' : profile_message
     })
 
 def browse(request): #This is the view for the browse page, it will show all available products to the user, if the user is a producer, it will only show the products that they have listed
