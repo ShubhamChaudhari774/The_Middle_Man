@@ -6,3 +6,4 @@ middlemen/__pycache__/
 middlemen/migrations/
 messages/
 .DS_Store
+media/
