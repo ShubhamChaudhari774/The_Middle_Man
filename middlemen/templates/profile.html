@@ -16,7 +16,9 @@
         </div>
         <div class="form-control">
             {% if field.name == "avatar" %}
+            {% if profile.avatar %}
             <img src="{{ profile.avatar.url }}" alt="Profile Avatar">
+            {% endif %}
             {% endif %}
 
             {{ field }}
