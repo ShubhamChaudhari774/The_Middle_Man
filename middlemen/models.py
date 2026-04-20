@@ -140,8 +140,6 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} by {self.producer.business_name or self.producer.user.username}"
 
-
-
 class RestaurantRequest(models.Model):
     # Categories for requested items
     CATEGORY_CHOICES = [
