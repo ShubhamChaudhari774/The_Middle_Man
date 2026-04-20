@@ -263,9 +263,10 @@ def producer_profile(request):
     new_product = False
     if request.method == 'POST':
         action = request.POST.get('action')
-        values = action.split()
-        action = values[0]
-        id = values[1]
+        if action[-1].isnumeric():
+            values = action.split()
+            action = values[0]
+            id = values[1]
         print(action)
         if action == 'edit_profile':
             pf = ProfileEditForm(request.POST, request.FILES, instance=profile)

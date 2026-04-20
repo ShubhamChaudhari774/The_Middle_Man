@@ -11,9 +11,9 @@ class Profile(models.Model):
     ]
     
     # One-to-one link with Django's built-in User model
-    #user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
 
-    user_id = models.IntegerField(primary_key=True, null=False, blank=False, default=0)
+    #user_id = models.IntegerField(primary_key=True, null=False, blank=False, default=0)
 
     # Role of the user (producer or buyer)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='buyer')
