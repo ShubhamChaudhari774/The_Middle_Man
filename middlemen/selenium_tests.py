@@ -20,7 +20,7 @@ class TestMiddlemanSelenium():
         self.driver.quit()
 
     def test_testaboutpageloads(self):
-        self.driver.get("http://136.119.216.245/")
+        self.driver.get("http://34.28.143.23/")
         self.driver.set_window_size(1440, 900)
         self.driver.find_element(By.LINK_TEXT, "About").click()
 
@@ -28,7 +28,7 @@ class TestMiddlemanSelenium():
         assert "about" in self.driver.current_url.lower() or "about" in self.driver.page_source.lower()
 
     def test_testbrowsepageloads(self):
-        self.driver.get("http://136.119.216.245/")
+        self.driver.get("http://34.28.143.23/")
         self.driver.set_window_size(1440, 900)
         self.driver.find_element(By.LINK_TEXT, "Browse").click()
 
@@ -36,15 +36,15 @@ class TestMiddlemanSelenium():
         assert "browse" in self.driver.current_url.lower() or "browse" in self.driver.page_source.lower()
 
     def test_testhomepageloads(self):
-        self.driver.get("http://136.119.216.245/")
+        self.driver.get("http://34.28.143.23/")
         self.driver.set_window_size(1440, 900)
         self.driver.find_element(By.LINK_TEXT, "Home").click()
 
         # Assertion added
-        assert self.driver.current_url == "http://136.119.216.245/" or "home" in self.driver.page_source.lower()
+        assert self.driver.current_url == "http://34.28.143.23/" or "home" in self.driver.page_source.lower()
 
     def test_testloginpageloads(self):
-        self.driver.get("http://136.119.216.245/")
+        self.driver.get("http://34.28.143.23/")
         self.driver.set_window_size(1440, 900)
         self.driver.find_element(By.LINK_TEXT, "Login").click()
         self.driver.find_element(By.NAME, "username").click()
@@ -56,7 +56,7 @@ class TestMiddlemanSelenium():
         assert self.driver.find_element(By.NAME, "password").is_displayed()
 
     def test_testsignuppageloads(self):
-        self.driver.get("http://136.119.216.245/")
+        self.driver.get("http://34.28.143.23/")
         self.driver.set_window_size(1440, 900)
         self.driver.find_element(By.LINK_TEXT, "Sign Up").click()
         self.driver.find_element(By.ID, "usernameTextBoxLabel").click()
@@ -70,7 +70,7 @@ class TestMiddlemanSelenium():
         assert self.driver.find_element(By.ID, "usernameTextBoxLabel").text == "Username:"
 
     def test_testsignupuser(self):
-        self.driver.get("http://136.119.216.245/")
+        self.driver.get("http://34.28.143.23/")
         self.driver.set_window_size(1440, 900)
         self.driver.find_element(By.LINK_TEXT, "Sign Up").click()
         self.driver.find_element(By.ID, "username").click()
