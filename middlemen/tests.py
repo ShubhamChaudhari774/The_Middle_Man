@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from .models import Profile, Product, Message
+from .models import Profile, Product, Message, RestaurantRequest
 
 
 class MiddlemanUnitTests(TestCase):
@@ -75,6 +75,22 @@ class MiddlemanUnitTests(TestCase):
 
         response = self.client.get(reverse("browse"))
         self.assertNotContains(response, "Hidden Product")
+
+    def test_producer_browse_shows_buyer_requests(self):
+        RestaurantRequest.objects.create(
+            buyer=self.buyer_profile,
+            title="Need local carrots",
+            category="Vegetables",
+            description="Looking for organic carrots for our restaurant.",
+            budget_min=20.00,
+            budget_max=50.00,
+            active=True
+        )
+
+        self.client.login(username="producer1", password="testpass123")
+        response = self.client.get(reverse("browse"))
+        self.assertContains(response, "Need local carrots")
+        self.assertContains(response, "Looking for organic carrots")
 
     # 6
     def test_view_message_marks_message_as_read(self):

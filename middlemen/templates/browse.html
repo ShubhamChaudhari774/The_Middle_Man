@@ -8,8 +8,17 @@
 <!-- HERO (copied from the about.html page) -->
 <section style="text-align:center;padding:5rem 2rem 4rem;">
   <h1 class="section-title" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:1rem;">
+    {% if is_producer %}
+    Browse Advertisements
+    {% else %}
     Browse Products
+    {% endif %}
   </h1>
+  {% if is_producer %}
+    <p style="margin-top:1rem;">View active buyer requests and connect with restaurants looking for your products.</p>
+  {% else %}
+    <p style="margin-top:1rem;">Explore fresh local products from verified producers.</p>
+  {% endif %}
 </section>
 
 <form method="GET" style="text-align:center; margin-bottom: 2rem;">
@@ -24,17 +33,43 @@
   </select>
 
   <!-- PRICE -->
+   {% if is_producer %}
+   {% else %}
   <input type="number" name="min_price" placeholder="Min Price">
   <input type="number" name="max_price" placeholder="Max Price">
+  
 
   <!-- ORGANIC -->
   <label>
     <input type="checkbox" name="organic" value="true">
     Organic only
   </label>
+  {% endif %}
 
   <button type="submit">Filter</button>
 </form>
+
+{% if is_producer %}
+
+<div class="container">
+
+  <div class="product-grid">
+
+    {% for req in requests %}
+      <div class="product-card">
+
+        <h3>{{ req.title }}</h3>
+        <p><strong>Category:</strong> {{ req.category }}</p>
+        <p><strong>Budget:</strong> ${{ req.budget_min }} to ${{ req.budget_max }}</p>
+        <p><strong>User:</strong> {{ req.buyer.business_name|default:req.buyer.user.username }} ({{ req.buyer.user.username }})</p>
+        <p><strong>Description:</strong> {{ req.description }}</p>
+      </div>
+
+    {% empty %}
+      <p style="text-align:center;">No advertisements available.</p>
+    {% endfor %}
+
+{% else %}
 
 <!-- This creates a grid of products (four per row) -->
 <div class="container">
@@ -57,10 +92,9 @@
     {% empty %}
       <p style="text-align:center;">No products available.</p>
     {% endfor %}
+    {% endif %}
 
   </div>
-
-</div>
 
 {% endblock %}
 

@@ -203,14 +203,9 @@ def browse(request):
 
     if is_producer:
         # Producer sees: restaurant requests (what buyers want)
-        qs = RestaurantRequest.objects.filter(active=True).select_related('buyer__user')
-        if search:
-            qs = qs.filter(Q(title__icontains=search) | Q(buyer__business_name__icontains=search))
+        qs = RestaurantRequest.objects.filter(active=True).order_by('created_at')
         if category:
-            qs = qs.filter(category=category)
-        if state:
-            qs = qs.filter(buyer__state__icontains=state)
-        qs = qs.order_by('title' if sort == 'name' else '-id')
+            qs = qs.filter(category=category, active=True).order_by('created_at')
         context = {
             'is_producer': True,
             'requests': qs,
