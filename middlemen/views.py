@@ -220,10 +220,10 @@ def browse(request):
         }
     else:
         # Buyer / guest sees: product listings from producers
-        qs = Product.objects.select_related('producer__user').order_by('producer__user')
+        qs = Product.objects.filter(available=True).select_related('producer__user')
         if search:
             qs = qs.filter(Q(name__icontains=search) | Q(producer__business_name__icontains=search))
-        if category:
+        if category and category != "all":
             qs = qs.filter(category=category)
         if state:
             qs = qs.filter(producer__state__icontains=state)
