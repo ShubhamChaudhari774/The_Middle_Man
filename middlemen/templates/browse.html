@@ -45,16 +45,13 @@
       <div class="product-card">
 
         <h3>{{ product.name }}</h3>
-
-        <p><strong>Category:</strong> {{ product.category }}</p>
-        <p><strong>Price:</strong> ${{ product.price }} per {{ product.unit }}</p>
-
         {% if product.image %}
           <img src="{{ product.image.url }}" alt="{{ product.name }}">
         {% endif %}
-
-        <p>{{ product.description }}</p>
-
+        <p><strong>Category:</strong> {{ product.category }}</p>
+        <p><strong>Price:</strong> ${{ product.price }} per {{ product.unit }}</p>
+        <p><strong>Producer:</strong> {{ product.producer.business_name|default:product.producer.user.username }}</p>
+        <p><strong>Description:</strong> {{ product.description }}</p>
       </div>
 
     {% empty %}
