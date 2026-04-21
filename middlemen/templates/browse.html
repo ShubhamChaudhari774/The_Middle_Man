@@ -8,8 +8,13 @@
 <!-- HERO (copied from the about.html page) -->
 <section style="text-align:center;padding:5rem 2rem 4rem;">
   <h1 class="section-title" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:1rem;">
-    Browse Products
+    Browse Marketplace
   </h1>
+  {% if is_producer %}
+    <p style="margin-top:1rem;">View active buyer requests and connect with restaurants looking for your products.</p>
+  {% else %}
+    <p style="margin-top:1rem;">Explore fresh local products from verified producers.</p>
+  {% endif %}
 </section>
 
 <form method="GET" style="text-align:center; margin-bottom: 2rem;">
@@ -36,30 +41,44 @@
   <button type="submit">Filter</button>
 </form>
 
-<!-- This creates a grid of products (four per row) -->
 <div class="container">
-
-  <div class="product-grid">
-
-    {% for product in products %}
-      <div class="product-card">
-
-        <h3>{{ product.name }}</h3>
-        {% if product.image %}
-          <img src="{{ product.image.url }}" alt="{{ product.name }}">
-        {% endif %}
-        <p><strong>Category:</strong> {{ product.category }}</p>
-        <p><strong>Price:</strong> ${{ product.price }} per {{ product.unit }}</p>
-        <p><strong>Producer:</strong> {{ product.producer.business_name|default:product.producer.user.username }} ({{ product.producer.user.username }})</p>
-        <p><strong>Description:</strong> {{ product.description }}</p>
-      </div>
-
-    {% empty %}
-      <p style="text-align:center;">No products available.</p>
-    {% endfor %}
-
-  </div>
-
+  {% if is_producer %}
+    <div class="product-grid">
+      {% for req in requests %}
+        <div class="product-card">
+          <h3>{{ req.title }}</h3>
+          <p><strong>Category:</strong> {{ req.category }}</p>
+          <p><strong>Buyer:</strong> {{ req.buyer.business_name|default:req.buyer.user.username }}</p>
+          <p><strong>Request:</strong> {{ req.description|default:'No description provided.' }}</p>
+          <p><strong>Budget:</strong>
+            {% if req.budget_min %}${{ req.budget_min }}{% else %}Any{% endif %}
+            –
+            {% if req.budget_max %}${{ req.budget_max }}{% else %}Any{% endif %}
+          </p>
+          <p><strong>Posted:</strong> {{ req.created_at|date:"M d, Y" }}</p>
+        </div>
+      {% empty %}
+        <p style="text-align:center;">No active buyer requests found.</p>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="product-grid">
+      {% for product in products %}
+        <div class="product-card">
+          <h3>{{ product.name }}</h3>
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          {% endif %}
+          <p><strong>Category:</strong> {{ product.category }}</p>
+          <p><strong>Price:</strong> ${{ product.price }} per {{ product.weight|default:'unit' }}</p>
+          <p><strong>Producer:</strong> {{ product.producer.business_name|default:product.producer.user.username }}</p>
+          <p><strong>Description:</strong> {{ product.description }}</p>
+        </div>
+      {% empty %}
+        <p style="text-align:center;">No products available.</p>
+      {% endfor %}
+    </div>
+  {% endif %}
 </div>
 
 {% endblock %}
