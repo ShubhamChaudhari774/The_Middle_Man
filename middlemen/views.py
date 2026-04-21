@@ -205,7 +205,10 @@ def browse(request):
         # Producer sees: restaurant requests (what buyers want)
         qs = RestaurantRequest.objects.filter(active=True).order_by('created_at')
         if category:
-            qs = qs.filter(category=category, active=True).order_by('created_at')
+            if category == 'all':
+                qs = qs.filter(active=True).order_by('created_at')
+            else:
+                qs = qs.filter(category=category, active=True).order_by('created_at')
         context = {
             'is_producer': True,
             'requests': qs,
